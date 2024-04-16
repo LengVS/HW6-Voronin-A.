@@ -1,0 +1,92 @@
+---
+title: "HW №6.Voronin A.V."
+---
+```{r}
+# Пусть наш спонсор заинтересован, чтобы исследование имело 80% мощность, а уровень значимости — 5%, ожидаемый drop-out rate = 10%.
+# Задаем дано:
+a <- 0.05
+power <- 0.2
+dropout_rate <- 0.1
+```
+```{r}
+# Поиск квантилей нормального распределения
+q_a_2 <- abs(qnorm(1 - a/2))
+q_power <- abs(qnorm(power))
+print(paste("Квантиль нормального распределения для уровня значимости alpha/2:", q_a_2))
+print(paste("Квантиль нормального распределения для уровня значимости power:", q_power))
+```
+```{r}
+# Задание 1
+
+# Дисперсия
+variance <- 0.20
+# Разница средних
+mean_diff <- 0.1
+# Клинически значимая разница
+clinical_diff <- 0.25
+```
+```{r}
+# Расчет выборки для исследования
+nominator <- (q_a_2 + q_power)^2 * variance^2
+denominator <- 2 * (clinical_diff - abs(mean_diff))^2
+sample_size <- nominator / denominator
+print(sample_size)
+```
+```{r}
+# Учитываем drop-out rate
+effective_sample_size <- sample_size / (1 - dropout_rate)
+sample_size_for_one_group <- ceiling(effective_sample_size)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
+```{r}
+# Задание 2
+# Дано:
+# Клинически значимая разница
+sigma <- -0.1
+# Доля ответов для препарата сравнения
+p1 <- 0.85
+# Доля ответов для тестового препарата
+p2 <- 0.65
+```
+```{r}
+# Расчет выборки для исследования
+nominator <- (q_a_2 + q_power)^2 * (p1 * (1 - p1) + p2 *(1 - p2))
+denominator <- (p1 - p2 - sigma)^2
+sample_size <- nominator / denominator
+```
+```{r}
+# Учитываем drop-out rate
+effective_sample_size <- sample_size / (1 - dropout_rate)
+sample_size_for_one_group <- ceiling(effective_sample_size)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
+```{r}
+# Задание 3
+# Дано:
+# hazard ratio
+HR <- 2
+# Процент пациентов
+d <- 0.8
+# Соотношения групп терапии
+p1 <- 0.5
+p2 <- 0.5
+```
+```{r}
+# Расчет выборки для исследования
+nominator <- (q_a_2 + q_power)^2
+denominator <- (log(HR))^2 * p1 * p2 * d
+sample_size <- nominator / denominator
+```
+```{r}
+# Учитываем drop-out rate
+effective_sample_size <- sample_size / (1 - dropout_rate)
+sample_size_for_one_group <- ceiling(effective_sample_size)
+total_sample_size <- sample_size_for_one_group * 2
+cat('Размер выборки для n1=n2:', sample_size_for_one_group, '\n')
+cat('Общий размер выборки n:', total_sample_size, '\n')
+```
+
